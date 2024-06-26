@@ -21,13 +21,13 @@ func (a *Addresses) Store(from, to string, value *big.Int) {
 	a.mx.Lock()
 	defer a.mx.Unlock()
 	if v, ok := a.addresses[from]; ok {
-		a.addresses[from] = big.NewInt(0).Set(value).Sub(v, value)
+		a.addresses[from] = a.addresses[from].Sub(v, value)
 	} else {
 		a.addresses[from] = big.NewInt(0).Neg(value)
 	}
 
 	if v, ok := a.addresses[to]; ok {
-		a.addresses[to] = big.NewInt(0).Set(value).Add(v, value)
+		a.addresses[to] = a.addresses[to].Add(v, value)
 	} else {
 		a.addresses[to] = big.NewInt(0).Set(value)
 	}

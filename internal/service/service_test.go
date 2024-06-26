@@ -3,12 +3,15 @@ package service
 import (
 	"block-balance/internal/client"
 	"block-balance/internal/types"
+	"context"
 	"fmt"
 	"math/big"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/time/rate"
 )
 
 type testClient struct {
@@ -26,24 +29,32 @@ func (tc *testClient) GetBlockTransactionsByNumber(number string) ([]types.Trans
 	}
 	txs := []types.Transaction{
 		{
-			From:  "a",
-			To:    "b",
-			Value: "0",
+			From:     "a",
+			To:       "b",
+			Value:    "0",
+			Gas:      "0",
+			GasPrice: "0",
 		},
 		{
-			From:  "a",
-			To:    "b",
-			Value: "64",
+			From:     "a",
+			To:       "b",
+			Value:    "64",
+			Gas:      "0",
+			GasPrice: "0",
 		},
 		{
-			From:  "a",
-			To:    "c",
-			Value: "64",
+			From:     "a",
+			To:       "c",
+			Value:    "64",
+			Gas:      "0",
+			GasPrice: "0",
 		},
 		{
-			From:  "b",
-			To:    "d",
-			Value: "64",
+			From:     "b",
+			To:       "d",
+			Value:    "64",
+			Gas:      "0",
+			GasPrice: "0",
 		},
 	}
 	return txs, nil
@@ -94,10 +105,12 @@ func TestService_GetMostChangedAccount(t *testing.T) {
 				client:      tt.fields.client,
 				addresses:   tt.fields.addresses,
 				blockAmount: tt.fields.blockAmount,
+				numWorkers:  2,
 				wg:          tt.fields.wg,
+				rateLimiter: *rate.NewLimiter(rate.Every(time.Second/10), 10),
 			}
 
-			got, got1, err := s.GetMostChangedAccount()
+			got, got1, err := s.GetMostChangedAccount(context.Background())
 			assert.NoError(t, err)
 			assert.Equal(t, tt.want, got)
 			assert.Equal(t, tt.want1, got1)

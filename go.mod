@@ -1,8 +1,6 @@
 module block-balance
 
-go 1.19
-
-require github.com/go-pkgz/lgr v0.10.4
+go 1.22
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -11,6 +9,6 @@ require (
 )
 
 require (
-	github.com/stretchr/testify v1.8.1
-	github.com/umputun/go-flags v1.5.1
+	github.com/stretchr/testify v1.9.0
+	golang.org/x/time v0.5.0
 )

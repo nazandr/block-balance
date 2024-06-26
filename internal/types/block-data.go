@@ -2,7 +2,6 @@ package types
 
 type BlockData struct {
 	Result Result `json:"result"`
-	Error  Error  `json:"error"`
 }
 
 type Result struct {
@@ -12,7 +11,9 @@ type Result struct {
 }
 
 type Transaction struct {
-	From  string `json:"from"`
-	To    string `json:"to"`
-	Value string `json:"value"`
+	From     string `json:"from"`
+	To       string `json:"to"`
+	Value    string `json:"value"`
+	Gas      string `json:"gas"`
+	GasPrice string `json:"gasPrice"`
 }

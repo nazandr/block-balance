@@ -1,11 +1,13 @@
 version: "3.8"
 
 services:
-  secret-pass:
+  block-balance:
     build:
       context: ./
       dockerfile: ./Dockerfile
     environment:
       - BLOCK_AMOUNT=10 # default is 100
-      - API_KEY=api_key
-      # - DEBUG=true
+      - API_KEY=<API_KEY> # default is empty
+      - RPS=60 # default is 10
+      - NUM_WORKERS=10 # default is 10
+      - TIMEOUT=10s # default is infinite
